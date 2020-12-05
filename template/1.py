@@ -1,4 +1,7 @@
 # AoC 2020. Day
+import collections
+import math
+import re
 import util
 
 
