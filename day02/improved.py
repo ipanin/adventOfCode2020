@@ -1,5 +1,15 @@
 # AoC 2020. Day 2. Password Philosophy
 import util
+import re
+
+
+def better():
+    lines = [re.split('[: -]', l.strip()) for l in open(r'C:\git\github\adventOfCode2020\day02\input.txt')]
+    lines1 = [(int(p1), int(p2), pwd.count(ch)) for p1, p2, ch, _, pwd in lines]
+    lines2 = [(pwd[int(p1)-1] == ch, pwd[int(p2)-1] == ch) for p1, p2, ch, _, pwd in lines]
+    part1 = sum(n1 <= matches <= n2 for n1, n2, matches in lines1)
+    part2 = sum(p1 ^ p2 for p1, p2 in lines2)
+    print(part1, part2)
 
 
 def test(data, validation_fun, expected):
@@ -45,4 +55,5 @@ test(lines, valid1, 548)
 print("Part 2.")
 test(lines, valid2, 502)
 
+better()
 # print("Part 2.")
