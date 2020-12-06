@@ -8,11 +8,12 @@ def assert_equal(actual, expected):
     else:
         print("OK")
 
-
+# get full file name relative to main .py script
 def full_name(fname):
     folder = os.path.dirname(os.path.realpath(__file__))
     return os.path.join(folder, fname)
 
+# each line is int
 def load_int_lines_list(fname):
     data = []
     with open(full_name(fname), 'rt') as f:
@@ -24,6 +25,12 @@ def load_int_lines_list(fname):
 
     return data
 
+def load_number_string_list(fname):
+    with open(full_name(fname), 'rt') as f:
+        line = f.readline().rstrip('\n')
+        return [int(item) for item in line]
+
+# each line is str
 def load_str_lines_list(fname):
     data = []
     with open(full_name(fname), 'rt') as f:
@@ -35,17 +42,14 @@ def load_str_lines_list(fname):
 
     return data
 
+# one line: 1,2,3
 def load_int_list(fname):
     with open(full_name(fname), 'rt') as f:
         line = f.readline().rstrip('\n')
         return [int(item) for item in line.split(',')]
 
-def load_number_string_list(fname):
-    with open(full_name(fname), 'rt') as f:
-        line = f.readline().rstrip('\n')
-        return [int(item) for item in line]
 
-
+# blocks of >= 1 strings, separated with empty lines
 def load_str_blocks(fname):
     with open(full_name(fname), 'rt') as f:
         blocks = f.read().rstrip().split('\n\n')
