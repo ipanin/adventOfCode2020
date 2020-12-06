@@ -35,13 +35,13 @@ def test1(data, expected):
         required = set(['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'])
         if len(required - s) == 0:
             result += 1
-        else:
-            print('invalid', d)
+#        else:
+#            print('invalid', d)
     util.assert_equal(result, expected)
 
 
 print("Part 1.")
 data = load_str_blocks_list('input.txt')
-test1(data, 0)
+test1(data, 233)
 
 # print("Part 2.")

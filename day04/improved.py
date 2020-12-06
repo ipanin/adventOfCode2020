@@ -1,31 +1,31 @@
-# AoC 2020. Day
+# AoC 2020. Day 4: Passport Processing
 import os
 import re
 import util
 
 
-def load_str_blocks_list(fname):
+def load_list_of_dict(fname):
     folder = os.path.dirname(os.path.realpath(__file__))
     fname = os.path.join(folder, fname)
     result = []
 
     with open(fname, 'rt') as f:
-        # return [int(line.rstrip('\n')) for line in f.readlines()]
-        data = dict()
+        block = dict()
         for line in f.readlines():
             x = line.rstrip('\n')
             if len(x):
                 pairs = x.split(' ')
                 for p in pairs:
                     k, v = p.split(':')
-                    if not valid(k, v):
-                        continue
-                    data[k] = v
-            elif len(data.keys()) > 0:
-                result.append(data)
-                data = dict()
+                    block[k] = v
+            elif len(block) > 0:  # empty line => block ended
+                result.append(block)
+                block = dict()
 
+        if len(block) > 0:
+            result.append(block)
     return result
+
 
 # byr(Birth Year) - four digits; at least 1920 and at most 2002.
 # iyr(Issue Year) - four digits; at least 2010 and at most 2020.
@@ -37,10 +37,9 @@ def load_str_blocks_list(fname):
 # hcl(Hair Color) - a  # followed by exactly six characters 0-9 or a-f.
 # ecl(Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
 # pid(Passport ID) - a nine-digit number, including leading zeroes.
-def valid(k, v):
+def valid(k: str, v: str) -> bool:
     if len(v) == 0:
         return False
-    #if (k in ['byr','iyi'] )
     if k == 'byr':
         return 1920 <= int(v) <= 2002
     if k == 'iyr':
@@ -64,18 +63,29 @@ def valid(k, v):
     return True
 
 
-def test1(data, expected):
+def passport_fields_valid(d: dict) -> bool:
+    for k, v in d.items():
+        if not valid(k, v):
+            return False
+
+    return True
+
+
+def test(data, expected):
     result = 0
     for d in data:
         s = set(d.keys())
-        required = set(['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid'])
-        if len(required - s) == 0:
+        if len(REQUIRED_FIELDS - s) == 0:
             result += 1
-#        else:
-#            print('invalid', d)
     util.assert_equal(result, expected)
 
 
+data = load_list_of_dict('input.txt')
+REQUIRED_FIELDS = set('byr iyr eyr hgt hcl ecl pid'.split())
+
+print("Part 1.")
+test(data, 233)
+
+data2 = filter(passport_fields_valid, data)
 print("Part 2.")
-data = load_str_blocks_list('input.txt')
-test1(data, 111)
+test(data2, 111)
