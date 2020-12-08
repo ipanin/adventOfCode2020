@@ -6,13 +6,14 @@ import os
 import util
 
 
-def test1(data, expected):
+def test1(fname, expected):
+    data = util.load_str_lines_list(fname)
     result = 0
     util.assert_equal(result, expected)
 
 
-# print("Part 1.")
-# data = util.load_int_list('input.txt')
-# test1(data, 179)
+# data = util.load_str_lines_list('input.txt')
 
-# print("Part 2.")
+# print("Part 1.")
+# test1('input.txt', 0)
+
