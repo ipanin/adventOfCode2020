@@ -4,9 +4,11 @@ import math
 import re
 import os
 import util
+from asm import Asm
 
 
 def test1(fname, expected):
+    # asm = Asm(fname)
     data = util.load_str_lines_list(fname)
     result = 0
     util.assert_equal(result, expected)
