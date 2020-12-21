@@ -1,5 +1,5 @@
 import os
-import re
+from PIL import Image
 
 
 def assert_equal(actual, expected):
@@ -8,13 +8,12 @@ def assert_equal(actual, expected):
     else:
         print("OK")
 
+
 def full_name(fname):
     folder = os.path.dirname(os.path.realpath(__file__))
     return os.path.join(folder, fname)
 
-# 111
-# 222
-def load_int_lines(fname):
+def load_int_lines_list(fname):
     data = []
     with open(full_name(fname), 'rt') as f:
         # return [int(line.rstrip('\n')) for line in f.readlines()]
@@ -25,9 +24,7 @@ def load_int_lines(fname):
 
     return data
 
-# aaa
-# bbb
-def load_str_lines(fname):
+def load_str_lines_list(fname):
     data = []
     with open(full_name(fname), 'rt') as f:
         # return [int(line.rstrip('\n')) for line in f.readlines()]
@@ -38,33 +35,25 @@ def load_str_lines(fname):
 
     return data
 
-# 1,2,3
 def load_int_list(fname):
     with open(full_name(fname), 'rt') as f:
         line = f.readline().rstrip('\n')
         return [int(item) for item in line.split(',')]
 
-# '123' -> [1, 2, 3]
 def load_number_string_list(fname):
     with open(full_name(fname), 'rt') as f:
         line = f.readline().rstrip('\n')
         return [int(item) for item in line]
 
-# aaa
-# bbb
-#
-# ccc
-# ddd
+
 def load_str_blocks(fname):
     with open(full_name(fname), 'rt') as f:
         blocks = f.read().rstrip().split('\n\n')
         return [b.split('\n') for b in blocks]
 
-
 def chunks(lst, n):
     for pos in range(0, len(lst), n):
         yield lst[pos : pos+n]
-
 
 class GrowingList(list):
     def __setitem__(self, index, value):
@@ -78,11 +67,23 @@ class GrowingList(list):
         else:
             return 0
 
+def draw_image(image: dict, w: int, h: int):
+    img = Image.new('RGB', (w, h), "blue")  # Create a new image with blue background
+    pixels = img.load()  # Create the pixel map
 
-def findall_ints(s: str):
-    return [int(x) for x in re.findall("\D*(\d+)\D*", s)]
+    for k, v in image.items():
+        if v == 0:
+            color = (0, 0, 0)
+        elif v == 1:
+            color = (255, 255, 255)  # white
+        elif v == 2:
+            color = (255, 0, 0)  # red
+        elif v == 3:
+            color = (0, 255, 0)  # green
+        elif v == 4:
+            color = (255, 255, 0)  # yellow
+        else:
+            color = (128, 128, 128)  # gray
 
-
-def rindex(alist, value):
-    return len(alist) - alist[-1::-1].index(value) - 1
-
+        pixels[k[0], k[1]] = color
+    img.resize((w*20, h*20), resample=Image.BOX).show()

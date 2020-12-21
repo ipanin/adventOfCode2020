@@ -8,13 +8,12 @@ def assert_equal(actual, expected):
     else:
         print("OK")
 
+
 def full_name(fname):
     folder = os.path.dirname(os.path.realpath(__file__))
     return os.path.join(folder, fname)
 
-# 111
-# 222
-def load_int_lines(fname):
+def load_int_lines_list(fname):
     data = []
     with open(full_name(fname), 'rt') as f:
         # return [int(line.rstrip('\n')) for line in f.readlines()]
@@ -25,9 +24,7 @@ def load_int_lines(fname):
 
     return data
 
-# aaa
-# bbb
-def load_str_lines(fname):
+def load_str_lines_list(fname):
     data = []
     with open(full_name(fname), 'rt') as f:
         # return [int(line.rstrip('\n')) for line in f.readlines()]
@@ -38,33 +35,36 @@ def load_str_lines(fname):
 
     return data
 
-# 1,2,3
+def load_matrix(fname):
+    data = []
+    with open(full_name(fname), 'rt') as f:
+        # return [int(line.rstrip('\n')) for line in f.readlines()]
+        for line in f.readlines():
+            x = line.rstrip('\n')
+            if len(x):
+                data.append(list(x))
+
+    return data
+
 def load_int_list(fname):
     with open(full_name(fname), 'rt') as f:
         line = f.readline().rstrip('\n')
         return [int(item) for item in line.split(',')]
 
-# '123' -> [1, 2, 3]
 def load_number_string_list(fname):
     with open(full_name(fname), 'rt') as f:
         line = f.readline().rstrip('\n')
         return [int(item) for item in line]
 
-# aaa
-# bbb
-#
-# ccc
-# ddd
+
 def load_str_blocks(fname):
     with open(full_name(fname), 'rt') as f:
         blocks = f.read().rstrip().split('\n\n')
         return [b.split('\n') for b in blocks]
 
-
 def chunks(lst, n):
     for pos in range(0, len(lst), n):
         yield lst[pos : pos+n]
-
 
 class GrowingList(list):
     def __setitem__(self, index, value):
