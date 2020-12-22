@@ -1,4 +1,4 @@
-# AoC 2020. Day 20
+# AoC 2020. Day 21: Allergen Assessment
 import util
 
 def parse(data):
